@@ -7,6 +7,7 @@ function Book(title, author, pages, read) {
 }
 
 //method display book, remove book
+//loop book array and call the method to add books to list
 function displayBook() {
     const myLibrary = [
         {
@@ -22,9 +23,23 @@ function displayBook() {
             read: true
         }
     ];
+    const books = myLibrary;
+    books.forEach((book) => listIn(book));
 }
 
-//loop book array and call the method to add books to list
+function listIn(book) {
+    const list = document.querySelector("#book-list");
+    const row = document.createElement("tr");
+    row.innerHTML = `
+    <td>${book.title}</td>
+    <td>${book.author}</td>
+    <td>${book.pages}</td>
+    <td><a href="#" class='btn btn-info'></td>
+    <td><a href="#" class='btn btn-danger delete'></td>
+    `
+    list.appendChild(row);
+}
+
 
 //add books to table row
 
@@ -37,3 +52,5 @@ function displayBook() {
 
 //event to remove a boook with delete button
 
+
+displayBook();
