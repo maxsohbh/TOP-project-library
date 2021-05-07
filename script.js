@@ -6,25 +6,30 @@ function Book(title, author, pages, read) {
     this.read = read
 }
 
+//sample array object for testing
+const myLibrary = [
+    {
+        title: "Lord of the Rings",
+        author: 'Tolkien',
+        pages: 600,
+        read: false
+    },
+    {
+        title: "Harry Potter",
+        author: "JK Rowling",
+        pages: 900,
+        read: true
+    }
+];
+
+function addToLibrary(book){
+    myLibrary.push(book);
+}
+
 //method display book, remove book
 //loop book array and call the method to add books to list
 function displayBook() {
-    const myLibrary = [
-        {
-            title: "Lord of the Rings",
-            author: 'Tolkien',
-            pages: 600,
-            read: false
-        },
-        {
-            title: "Harry Potter",
-            author: "JK Rowling",
-            pages: 900,
-            read: true
-        }
-    ];
-    const books = myLibrary;
-    books.forEach((book) => listIn(book));
+    myLibrary.forEach((book) => listIn(book));  
 }
 
 //add books to table row
@@ -41,13 +46,16 @@ function listIn(book) {
     list.appendChild(row);
 }
 
-// handle storage
+// LOCAL STORAGE //
+//save to local storage
 
 
 
-
+// EVENTS SECTION //
 //event listen to display books: document laod
 document.addEventListener("DOMContentLoaded", displayBook)
+// document.addEventListener("DOMContentLoaded", getLocal)
+
 // event to listen to clicks
 document.addEventListener("submit", (e) => {
     e.preventDefault()
@@ -59,7 +67,9 @@ document.addEventListener("submit", (e) => {
     const newBook = new Book(title, author, pages, read);
     // console.log(newBook);
     //add book to list
+    addToLibrary(newBook);
     listIn(newBook);
+
 
     //clearfields
     document.querySelector("#title").value = '';
@@ -72,11 +82,20 @@ document.addEventListener("submit", (e) => {
 document.querySelector("#book-list").addEventListener("click", (e) => {
     if (e.target.classList.contains("delete")) {
         e.target.parentElement.parentElement.remove();
+        // removeFromLocal(e.target.parentElement.parentElement.firstElementChild.innerHTML)
     }
 
     //work in progress, how to change the object read status to false
     if (e.target.classList.contains("togg")) {
-        // e.target.innerHTML = `boop`;
-        console.log(e.target);
+        //Targetting the book.title
+        const name = e.target.parentNode.parentNode.firstElementChild.innerHTML;
+        
+        //target to the title, to update the value of read in the library
+        for (book of myLibrary){
+            if(book.title == name){
+                book.read =!book.read;
+                e.target.parentNode.firstElementChild.innerHTML = `${book.read?`Read`: `Not Read`} `
+            }
+        }
     }
 })
